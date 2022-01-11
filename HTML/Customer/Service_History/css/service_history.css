@@ -361,7 +361,7 @@ only screen and (max-width: 760px) ,
 
   table { 
       width: 100%; 
-      padding-right: 10px;
+      margin-right: 10px;
   }
  
   table, thead, tbody, th, td, tr { 
