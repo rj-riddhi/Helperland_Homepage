@@ -148,7 +148,7 @@ CREATE TABLE `users` (
 -- Foreign key contraints
 
 -- Constraints for table `Book_Service_Customer`
-ALTER TABLE `Book_Service_Customer` ADD CONSTRAINT `Book_Service_Customer_fk0` FOREIGN KEY (`cust_id`) REFERENCES ``(``);
+ALTER TABLE `Book_Service_Customer` ADD CONSTRAINT `Book_Service_Customer_fk0` FOREIGN KEY (`cust_id`) REFERENCES `User_details`(`id`);
 
 -- Constraints for table `Service_request_details`
 ALTER TABLE `Service_request_details` ADD CONSTRAINT `Service_request_details_fk0` FOREIGN KEY (`request_id`) REFERENCES `Book_Service_Customer`(`id`);
