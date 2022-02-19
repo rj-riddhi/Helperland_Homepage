@@ -1,3 +1,4 @@
+ 
  <nav class="row  m-0 nav_row  navbar-expand-md navbar-light" id="navbar" >
         <div class="col " style=" margin-top:4px;">
           <img class="logo" src="images/Service_History/logo-small.png">
@@ -14,14 +15,15 @@
         
         <div class="col-md-auto  text-center pt-4 pt-md-0 collapse navbar-collapse p-0 "  id="navbarSupportedContent">
           <ul class="navabr-right ml-auto">
-            <li><a href="" class="btn nav_btn">Book Now </a></li>
+            <li><a href="../controllers/Users.php?q=book_now"  class="btn nav_btn active">Book Now </a></li>
             <li ><a href="../controllers/Users.php?q=prices" class="btn">Prices & services</a></li>
             <li><a href="#" class="btn">Warranty </a></li>
             <li><a href="#" class="btn">Blog</a></li>
-            <li><a  href="../controllers/Users.php?q=contactus" class="btn">Contact</a></li>
+            <li><a  href="../controllers/Users.php?q=contact" class="btn">Contact</a></li>
             <span  style="border:1px solid #fff"></span>
             <li><a href="" class="pr-0 d-none d-md-inline" style="border-style: none;" ><img src="images/Service_History/icon-notification.png"><span class="badge badge-light">2</span></a></li> 
             <span style="border:1px solid #fff" ></span>
+            
             <li><a href="../controllers/Users.php?q=logout" class="btn">Logout</a></li>
             <!-- <li >
               <a href="#dropdown"style="border-style: none;" >
