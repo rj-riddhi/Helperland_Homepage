@@ -95,6 +95,7 @@ class Users{
 
 		// Registration succesfull or not
 		if($this->usermodel->register($data)){
+			$_SESSION['UserName'] = $data['usersFirstName'];
 			$this->createUserSession($data['usersFirstName']." ".$data['usersLastName']);
 			?>
 			<script type="text/javascript">
@@ -173,7 +174,7 @@ class Users{
 				alert ("Registerd succesfully");
 			</script>
 			<?php
-			flash("register" , "Registration succesfull");
+			flash("register" , "Registration succesfull" , "alert alert-success");
 			redirect("../views/upcoming_service.php");
 		}
 		else
@@ -205,6 +206,7 @@ class Users{
             $loggedInUser = $this->usermodel->login($data['Email'], $data['usersPwd']);
             if($loggedInUser){
                 //Create session
+				$_SESSION['email'] = $data['Email'];
                 $this->createUserSession($loggedInUser);
             }else{
                 flash("login", "Password Incorrect");
@@ -215,6 +217,123 @@ class Users{
             redirect("../views/Homepage.php");
         }
     }
+    public function City()
+    {		echo "<script>alert('called')</script>";exit;
+            // $pincode = $_SESSION['postalcode'];
+            // $result = $this->usermodel->City($pincode);
+           	// $city = $result[0];
+            // $state = $result[1];
+            // $return = [$city, $state];
+            // echo json_encode($return);exit;
+        
+    }
+
+    
+	public function book_service_schedule_plan(){
+		
+		$service_data=[
+			'bath' =>trim($_POST['bath']),
+			'bed' =>trim($_POST['bed']),
+			'date' =>trim($_POST['date']),
+			'time' =>trim($_POST['time']),
+			'hrs' =>trim($_POST['hrs']),
+			'comment'=>trim($_POST['comment']),
+			'pets' =>$_POST['pets']
+
+		];
+		if(empty($service_data['bath'] || $service_data['bed'] || $service_data['date'] || $service_data['hrs'] || $service_data['time']))
+		{
+			flash("book_service","Please fill all details");
+			redirect("../views/book_service.php");
+		}
+		if($service_data['bath']<1){
+			flash('error',"Min 1 bath should select");
+			redirect("../views/book_service.php");
+		}
+		if($service_data['bed'] < 1){
+			flash('error','Min 1 bed should select');
+			redirect("../views/book_service.php");
+		}
+			 $_SESSION['bed'] = $service_data['bed'];
+			 $_SESSION['bath'] = $service_data['bath'];
+			 $_SESSION['date'] = $service_data['date'];
+			 $_SESSION['comment'] = $service_data['comment'];
+		if($service_data['date'] < date('m/d/Y'))
+		{
+			flash("book_service","Please enter valid date");
+			redirect("../views/book_service.php");
+		}
+		$_SESSION['date'] = $service_data['date'];
+		if(empty($service_data['time']))
+		{
+			flash("book_service","Please enter time");
+			redirect("../views/book_service.php");
+		}
+		$_SESSION['time'] = $service_data['time'];
+		if($service_data['hrs']<3 || empty($service_data['hrs'])){
+			flash("book_service","Minimum selected hours are 3");
+			redirect("../views/book_service.php");
+		}
+		$_SESSION['hrs'] = $service_data['hrs'];
+		
+		
+		if(isset($service_data['pets']))
+		{
+			$_SESSION['pets']="Yes";
+			$service_data['pets'] = "Yes";
+		}
+		else
+		{
+			$service_data['pets']="No";
+		}
+		// $this->favourite_sp();
+		echo json_encode($service_data);
+
+		flash("book_service","If you want extra services then please select other wise press next","alert alert-success");
+		redirect("../views/book_service.php");
+
+
+	}
+	
+
+	public function saveaddress(){
+		$pincode = $_SESSION['postalcode'];
+		$result =$this->usermodel->City($pincode);
+		$city = $result[0];
+        $state = $result[1]; 
+		$email = $_SESSION['email'];
+		$id = $this->usermodel->getuserid($email);
+		$userid = $id['UserId'];
+		$service_data=[
+			'street' =>trim($_POST['street']),
+			'housenumber' =>trim($_POST['housenumber']),
+			'phone' =>trim($_POST['phone']),
+			'postalcode'=>$pincode,
+			'email'=>$email,
+			'userid' => $userid,
+			'city'=>$city,
+			'state'=>$state
+		];
+		if(empty($service_data['street']||$service_data['housenumber']||$service_data['phone'])){
+			flash("saveaddress","Please enter all details");
+			redirect("../views/book_service.php");
+		}
+		$session['userid'] = $service_data['userid'];
+		
+		$result = $this->usermodel->saveaddress($service_data);
+		if($result)
+		{
+			redirect("../views/book_service.php?fourth_step=true");
+		}
+		else
+		{
+			flash("saveaddress","Adress is not saved try again");
+		}
+	}
+	
+	
+     
+    
     public function createUserSession($user){
         
         $_SESSION['FirstName'] = $user;
@@ -222,11 +341,17 @@ class Users{
     }
 
     public function logout(){
+
     	unset($_SESSION['FirstName']);
+    	session_unset();
     	session_destroy();
+
     	redirect("../views/Homepage.php");
 
+
+
     }
+
 }
 $init = new Users;
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -246,6 +371,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		 case 'login' :
 		 $init->login();
 		 break;
+
+		 case 'book_service_schedule_plan':
+		 $init->book_service_schedule_plan();
+		 break;
+
 		 default:
 		 redirect("../views/Homepage.php");
 	}
@@ -256,13 +386,16 @@ else
 		case 'home' :
 			redirect("../views/Homepage.php");
 			break;
+		case 'login':
+			redirect("../views/Homepage.php?login=true");
+			break;
 		case 'about' :
 			redirect("../views/About.php");
 			break;
 		case 'faq' :
 			redirect("../views/FAQ.php");
 			break;
-		case 'contactus' : 
+		case 'contact' : 
 			redirect("../views/Contact.php");
 			break;
 		case 'prices' :
@@ -274,6 +407,13 @@ else
 		case 'logout' :
 			$init->logout();
 			break;
+		case 'book_now':
+			redirect("../views/book_service.php");
+			break;
+		case 'validpostal':
+			$init->validpostal();
+			break;
+		
 		default:
 			redirect("../views/Homepage.php");
 
