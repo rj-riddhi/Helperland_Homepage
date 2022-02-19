@@ -6,12 +6,6 @@
 		<?php include_once 'headerLinks.php'; ?>
 		<link rel="stylesheet" href="css/homepage.css">
 		<link rel="stylesheet" href="css/login.css">
-		<!-- <script >
-	function login_set(){
-		sessionStorage.afterPages = 2;
-	}
-</script> -->
-
 	</head>
 	<body>
 		<div class="container  main-container">
@@ -19,7 +13,7 @@
 				
 				<?php
 					include_once 'homeNav.php';
-				 ?>
+				?>
 				<div class="container-fluid container1">
 					<div class="row m-0">
 						<div class="col p-0">
@@ -224,20 +218,29 @@
 					</div>
 					
 				</div>
+
 				
 			</section>
-			<?php include_once 'footer.php' ?>
-			
-		</div>
-		<!-- <script>
-	window.onload = function(){
-		if(sessionStorage.getItems('afterPages') == 2){
-			document.querySelector('.login').click();
-			sessionStorage.setItem('afterPages',0);
-		}
-	}
-</script> -->
-		<?php include_once 'jsLinks.php' ?>
+			<?php include_once 'footer.php' ;
+				  include_once 'jsLinks.php' ;
+			    ?>
+		
+  <?php if ( isset($_GET['login']) && $_GET['login'] == 'true' ){
+   	?>
+   	<script>
+			 window.onload = function()
+			 {
+				if ( document.getElementById('box-2') )
+					{
+		           		var login = document.getElementById('box-2');
+		           		//console.log(login);
+		           		login.click();
+					}
+			}
+		</script>
+   	<?php
+    } ?>
+
 		
 	</body>
 </html>
