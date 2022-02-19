@@ -22,8 +22,8 @@
 			<li><a href="../controllers/Users.php?q=prices">Prices</a></li>
 			<li><a href="#">Our Guarantee</a></li>
 			<li><a href="#">Blog</a></li>
-			<li><a href="../controllers/Users.php?q=contactus">Contact us</a></li>
-			<li><!-- <a href="#myModal" data-toggle="modal" data-target="#myModal" class="nav_btn login">Login</a> -->
+			<li><a href="../controllers/Users.php?q=contact">Contact us</a></li>
+			<li>
 				<a class="nav-link " href="#login" id="box-2" title="Login" data-toggle="modal" data-target="#LoginModal">Login </a>
 			</li>
 			<li><a href="../controllers/Users.php?q=serviceprovider" class="nav_btn">Become a Helper</a></li>
@@ -36,8 +36,7 @@
 <?php
     flash('login')
 ?> 
-
-       <!-- MODEL -->
+		<!-- MODEL -->
 		<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginForm" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
