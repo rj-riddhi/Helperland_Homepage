@@ -9,6 +9,7 @@
     <title>Book Services</title>
     <!-- Success -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     
   </head>
   <body >
@@ -72,7 +73,7 @@
                 <div class="alert alert-danger" id="error-message" style="display: none"></div>
                 <div class="alert alert-success"id="success-message" style="display: none"></div>
                 <?php flash('book_service'); ?>
-              <form  method="post">
+              <form>
                 <div class="form-step form-step-active" id="first_step">
                   <div class="form-row input-group">
                     <div class="form-group col-md-6">
@@ -81,25 +82,25 @@
                     </div>
                     <div class="input-group row justify-content-end" >
                       <div class="col-auto">
-                        <button onclick="postalbutton()" class="btn btn1 btn-next" id="postalbtn">Check Availability</button>
+                        <button onclick="postalbutton()" class="btn btn1 btn-next">Check Availability</button>
                       </div>
                     </div>
                   </div>
                 </div>
               </form>
                 <!-- Step 2 -->
-                
-                
-                <form  method="post" action="http://localhost/Helperland/controllers/Users.php" id="stepperform" novalidate >
-                  <input type="hidden" name="type" value="book_service_schedule_plan" required>
+           
+                 <form>
+                  <!-- <input type="hidden" name="type" value="book_service_schedule_plan" required> -->
+                  <form>
                   <div class="form-step second_step" id="second_step">
-                    <div class="input-group row" >
-                      <div class="col ">
-                        <label for="">Select Number of rooms and bath</label>
+                    <div class="input-group form-row" >
+                      <div class="col form-group">
+                         <label for="bed">Select Number of rooms and bath</label>
                         <div class="row form-row">
-                          <div class="col-md-2 col">
+                          <div class="col-md-2 col form-group">
                             <div class="input-group m-0">
-                              <input type="number" class="form-control"name="bed"id="bed" placeholder="1 bed" value="<?php if(isset($_SESSION['bed'])) echo $_SESSION['bed'] ?>"required>
+                              <input type="number" class="form-control"name="bed"id="bed" placeholder="1 bed" value="<?php if(isset($_SESSION['bed'])) echo $_SESSION['bed'] ?>" required>
                               
                             </div>
                           </div>
@@ -123,7 +124,7 @@
                           </div>
                           <div class="col">
                             <div class="input-group m-0">
-                              <input placeholder="Selected time" name="time" type="time" id="validationCustom02 time" placeholder="Select Time" value="<?php if(isset($_SESSION['time'])) echo $_SESSION['time'] ?>" class="form-control" required>
+                              <input placeholder="Selected time" name="time" type="time" id="time" placeholder="Select Time" value="<?php if(isset($_SESSION['time'])) echo $_SESSION['time'] ?>" class="form-control" required>
                             </div>
                           </div>
                         </div>
@@ -133,7 +134,7 @@
                         <div class="row form-row w-50">
                           <div class="col">
                             <div class="input-group m-0">
-                              <input type="number" name="hrs"id="hrs" class="form-control" placeholder="3 Hrs"value="<?php if(isset($_SESSION['hrs'])) echo $_SESSION['hrs'];?>"required>
+                              <input type="number" name="hrs"id="hrs" class="form-control" placeholder="3 Hrs" step="0.5" value="<?php if(isset($_SESSION['hrs'])) echo $_SESSION['hrs'];?>"required>
                             </div>
                           </div>
                         </div>
@@ -183,7 +184,7 @@
                     <div class="input-group row mt-0" >
                       <div class="col">
                         <div class="custom-control custom-checkbox">
-                          <input type="checkbox" name="pets"<?php if(isset($_SESSION['pets'])) echo 'checked'?>  class="custom-control-input" id="defaultUnchecked" >
+                          <input type="checkbox" name="pets"<?php if(isset($_SESSION['pets'])) echo 'checked'?>  class="custom-control-input pets" id="defaultUnchecked" >
                           <label class="custom-control-label" name="pets" for="defaultUnchecked" style="font-weight: normal;font-size: 16px" >I have pets at home</label>
                         </div>
                       </div>
@@ -192,8 +193,7 @@
                     <div class="input-group row justify-content-end" >
                       
                       <div class="col-md-2 btns-group" >
-                        <button  type="submit" class="btn btn1 btn-next" id="button" >Next</button>
-                        <input type="button" style="display: none" class="btn btn1" id="button2" value="Next">
+                        <button onclick="scheduleplan()" type="submit" class="btn btn1 btn-next" id="button" >Next</button>
                       </div>
                     </div>
                   </div>
@@ -264,7 +264,10 @@
                       <hr>
                       <p>You can choose your favourite service provider from below list</p>
                       
-                      <div id="favsplist"></div>
+                      <div class="container">
+                        <div class="row" id="favsplist">
+                        </div>
+                      </div>
                       
                     </div>
                   </div>
@@ -278,13 +281,14 @@
                   </div>
                 </div>
                 <!-- Step 4 -->
+                <form>
                 <div class="form-step form-step-4">
                   <div class="input-group row" >
                     <div class="col ">
                       <label for="">Pay Securly with Helperland payment Gateway!</label>
                       <p>Promo code (optional)</p>
                       <div class="row">
-                        <div class="col-auto"><input type="text" name="promocode" class="form-control" placeholder="Promo code (optional)"></div>
+                        <div class="col-auto"><input type="text" id="code"name="promocode" class="form-control" placeholder="Promo code (optional)"></div>
                         <div class="col-auto"> <button type="submit" onclick="promocode()" class="cancel btn "> Apply </button></div>
                       </div>
                     </div>
@@ -316,19 +320,21 @@
                   <div class="input-group row mt-0" >
                     <div class="col">
                       <div class="custom-control custom-checkbox">
-                        <input  type="checkbox" class="custom-control-input"id="terms_and_conditions" value="1" onclick="terms_changed(this)" required >
+                        <input  type="checkbox" class="custom-control-input"id="terms_and_conditions" value="1"  onclick="terms_changed(this)" required >
                         <label class="custom-control-label" for="terms_and_conditions" style="font-weight: normal;font-size: 16px" >I accepted <span style="color:#1D7A8C">terms abd conditions,</span>the <span style="color:#1D7A8C">cancelation policy and privacy policy.</span>I confirm that helperland starts to execute the contract before the expiry of withdrawal period and I lost my right of withdrawal as a consumer with full performanc eof the contract.</label>
                       </div>
                     </div>
                   </div>
                   <hr>
                   <div class="input-group row justify-content-end" >
-                    <div class="col-auto">
-                     <!-- <a href="#myModal" type="submit" class="btn1 trigger-btn" id="submit_button" data-toggle="modal" disabled>Complete Booking</a> -->
+                    <div class="col-auto" id="complete_booking">
+
+                      
                      <button type="submit" onclick="bookingcomplete()" class="btn1 btn trigger-btn" id="submit_button">Complete Booking</button>
                     </div>
                     <!-- Success model -->
-                        <div id="myModal" class="modal fade">
+                    <div class="modal fade" id="successmodal"style="overflow-y: hidden">
+                        
                           <div class="modal-dialog modal-confirm">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -341,11 +347,31 @@
                                 <p class="text-center">Service Request id : <span id="requestid"></span></p>
                               </div>
                               <div class="modal-footer">
-                                <button class="btn btn-block" data-dismiss="modal">OK</button>
+                                <button class="btn btn-block" id="sucess_ok" href="customer_service_history.php" data-dismiss="modal">OK</button>
                               </div>
                             </div>
                           </div>
                         </div>
+                    <!-- Failde model -->
+                   
+                        <div id="Faild_modal" class="modal fade">
+                          <div class="modal-dialog modal-confirm">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <div class="icon-box" style="background-color:#ce2029">
+                                  <i class="material-icons">&#xE5CD;</i>
+                                </div>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              </div>
+                                <h4 class="text-center">Ooops!</h4> 
+                              <div class="modal-body text-center">
+                                <p id="errormsg"></p>
+                                <button class="btn btn-block" id="failed_ok" data-dismiss="modal" style="background-color: #ce2029">OK</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                   </div>
                 </div>
               </form>
@@ -494,10 +520,11 @@
       <?php include_once 'footer.php' ;
       ?>
 
+
     <?php
     include_once 'book_service_stepper_1.php';
       include_once 'jsLinks.php' ;
     ?>
-                
+        
       </body>
   </html>
