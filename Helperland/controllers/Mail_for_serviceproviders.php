@@ -7,7 +7,7 @@ require_once '../PHPMailer/src/PHPMailer.php';
 require_once '../PHPMailer/src/Exception.php';
 require_once '../PHPMailer/src/SMTP.php';
 
-class SPMail{
+class Mail_for_serviceproviders{
     
     // private $userModel;
     private $mail;
@@ -29,12 +29,13 @@ class SPMail{
     public function sendEmail(){
         //Sanitize POST data
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        $Email = $_SESSION['spemail'];
-
+        // $Email = $_SESSION['spemail'];
+        for($i = 0 ; $i < sizeof($_SESSION['spemail'])  ; $i++){
+            $Email = $_SESSION['spemail'][$i];
         //Can Send Email Now
         $subject = "New Service request arrived";
-        $message = "<h1>Thank You for using Helperland😊</h1><br><p>We recieved a helper request on helperland.We will inform you soon as your request will accept.</p>";
-        $message .= "<p>we hope you enjoy your booking process </p>";
+        $message = "<h1>New request have been arrived</h1><br><p>We recieved a customer request for service on helperland in your area.If you want then accept it.</p>";
+        
         $message .= "<p>Thanks and regards.</p>";
 
         $this->mail->setFrom('TheBoss@gmail.com');
@@ -44,6 +45,7 @@ class SPMail{
         $this->mail->addAddress($Email);
 
         $this->mail->send();
+    }
 
         
     }
@@ -51,7 +53,7 @@ class SPMail{
     
 }
 
-$init = new SPMail;
+$init = new Mail_for_serviceproviders;
 $init->sendEmail();
 
 
