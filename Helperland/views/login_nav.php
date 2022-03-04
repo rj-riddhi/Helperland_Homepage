@@ -25,12 +25,8 @@
             <span style="border:1px solid #fff" ></span>
             
             <li><a href="../controllers/Users.php?q=logout" class="btn">Logout</a></li>
-            <!-- <li >
-              <a href="#dropdown"style="border-style: none;" >
-                <img src="images/Service_History/admin-user.png"> 
-                <img src="images/Service_History/sp-arrow-down.png">
-              </a>
-            </li>  -->
+            <li><a href="../controllers/Users.php?q=mysettings" class="btn">My Settings</a></li>
+              
 
 
             
@@ -40,11 +36,11 @@
 
           
 
-            <hr class="mx-auto d-block d-sm-none">
+            <hr class="mx-auto d-block d-md-none">
           <div class="row navbar">
-            <ul class="navabr-right navbar2 mx-auto d-block d-sm-none">
-            <div class="col-12  p-2"><li ><a  href="" >Dashboard</a></li></div>
-            <div class="col-12  p-2"><li><a href=""  >Service History </a></li></div>
+            <ul class="navabr-right navbar2 mx-auto d-block d-md-none">
+            <div class="col-12  p-2"><li ><a  href="../controllers/Users.php?q=cust_dashboard" >Dashboard</a></li></div>
+            <div class="col-12  p-2"><li><a href="../controllers/Users.php?q=cust_servicehistory"  >Service History </a></li></div>
             <div class="col-12  p-2"><li><a href="" >Service Schedule</a></li></div>
             <div class="col-12  p-2"> <li><a href="" >Favourite Pros</a></li></div>
             <div class="col-12  p-2"><li><a href="" >Invoices</a></li></div>
