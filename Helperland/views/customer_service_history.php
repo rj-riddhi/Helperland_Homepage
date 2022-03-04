@@ -7,8 +7,10 @@
 <html lang="en">
   <head>
     
-  <?php include_once 'headerLinks.php'; ?>
-  <link rel="stylesheet" href="css/cust_service_history.css">
+  <?php include_once 'headerLinks.php';
+         ?>
+  <link rel="stylesheet" href="../views/css/customer_service_history.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
   <title>Service History </title>
 
   
@@ -49,7 +51,7 @@
   <div class="col d-none d-lg-block sidebar_col p-0" >
     
   <div class="sidebar">
-  <a  href="#">Dashboard</a>
+  <a  href="../controllers/Users.php?q=cust_dashboard">Dashboard</a>
   <a href="#" class="active">Service History</a>
   <a  href="#">Service Schedule</a>
   <a href="#">Favourite Pros</a>
@@ -75,413 +77,73 @@
       <th class="header"scope="col">Rate SP</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <td>
-        <div class="row">
-           <div class="col">
-              <img src="images/Service_History/calendar.png"><span class="date"><strong>31/03/2018</strong></span>
-            </div>
-        </div>
-          <div class="row">
-            <div class="col"><span class="time">12:00 - 18:00</span>
-            </div>
-          </div>
-      </td>
+  <tbody id="tabledata">
+   
 
-
-
-      <td>
-        <div class="row">
-           <div class="col-auto avatar">
-              <img src="images/Service_History/cap.png">
-            </div>
-            <div class="col"><span >Lyum Weston</span><br>
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star2.png">
-              <span>4</span>
-            </div>
-        </div>
-      </td>
-      <td class="text-style-1"><span style="font-size:20px;"> €</span>63</td>
-      <td><span class="badge_complete" data-toggle="modal-1" data-target="#myModal-1">Completed</span></td>
-
-      <td><span class=" badge_rate1"data-toggle="modal" data-target="#myModal">Rate SP</span></td>
-
-      <div class="modal fade" id="myModal">
+    <!-- Summary modal -->
+<div class="modal fade" id="summaryModal">
         <div class="modal-dialog">
           <div class="modal-content">
       
         <!-- Modal Header -->
         <div class="modal-header pb-0">
-          <h4 class="modal-title">
-            <div class="row">
-              <div class="col-auto avatar1" ><img  src="images/Service_History/cap.png"></div>
-              <div class="col-auto"><span class="avatar_name">Lyum Weston</span><br>
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star2.png">
-                  <span style="font-size:16px;color:#646464">4</span>
-              </div>
-              <div class="col-12 pt-3"><span class="avatar_name"><p>Rate your service Provider</p></span> </div>
-            </div>
-
-
-
-          </h4>
+          <h4 class="modal-title">Service Details</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
-          <div class="row">
-            <div class="col-4 avatar_name2">On time arrival</div>
-            <div class="col pl-0"><img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star2.png">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4 avatar_name2">Friendly</div>
-            <div class="col pl-0"><img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star2.png">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4 avatar_name2">Quality of service</div>
-            <div class="col pl-0"><img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star1.png">
-                  <img src="images/Service_History/star2.png">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p class="avatar_name2 mt-2 mb-1">Feedback on service provider</p>
-              
-              <textarea rows="4" cols="50" name="comment" form="usrform"></textarea>
+          <div class="row summary_row" >
+            <div class="col-12 avatar_name2" style="font-size:1.5rem"><strong id="date_time"></strong></div>
+            <div class="col-12 ">
+                <strong>Duration:</strong> <span id="duration"></span> Hrs  
             </div>
           </div>
           
+          <div class="row summary_row">
+            <div class="col-12"><strong>Service Id:</strong> <span class="avatar_name2" id="serviceid"></span></div>
+            <div class="col-12">
+              <strong>Extras:</strong> <span id="extra"></span>
+            </div>
+            <div class="col-4"><strong>Net Amount:</strong></div>
+            <div class="col-8 payment_fonts "><span id="payment"></span>  € </div>
+          </div>
+          <div class="row summary_row">
+            <div class="col-12 "><strong>Service Address:</strong> <span class="avatar_name2" id="address"></span></div>
+            <div class="col-12">
+              <strong>Billing Address:</strong> <span class="avatar_name2">Same as cleaning Address</span>
+            </div>
+            <div class="col-12">
+              <strong>Phone:</strong> <span class="avatar_name2">+49 <span id="phone"></span></span>
+            </div>
+            <div class="col-12">
+              <strong>Email:</strong> <span class="avatar_name2" id="email"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 avatar_name2">Comments <span id="comments"></span></div>
+            <div class="col-12 d-none " id="pets" >
+             <i class="fa fa-times  icon-background"></i> I don't have pets at home
+            </div>
+            
+          </div>
         </div>
         
         <!-- Modal footer -->
-        <div class="modal-footer mx-auto">
-          <button class="btn badge_rate1" data-dismiss="modal">Submit</button>
+        <div class="modal-footer justify-content-center">
+          <!-- <div class="row"> -->
+            <span class="badge_rate1" data-dismiss="modal">OK</span>
+         <!--  </div> -->
         </div>
         
           </div>
         </div>
-      </div>
-    </tr>
+</div>
 
-    <tr>
-      <td>
-        <div class="row">
-           <div class="col">
-              <img src="images/Service_History/calendar.png"><span class="date"><strong>31/03/2018</strong></span>
-            </div>
-        </div>
-          <div class="row">
-            <div class="col"><span class="time">12:00 - 18:00</span>
-            </div>
-          </div>
-      </td>
 
-      <td>
-        <div class="row">
-           <div class="col-auto avatar">
-              <img src="images/Service_History/cap.png">
-            </div>
-            <div class="col">Lyum Weston<br>
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star2.png">
-              <span>4</span>
-            </div>
-        </div>
-      </td>
-      <td class="text-style-1 price "><span style="font-size:20px;">€</span>63</td>
-      <td><span class="badge_cancel">Cancelled</span></td>
-      <td><span class=" badge_rate2 disabled"data-toggle="modal" data-target="#myModal">Rate SP</span></td>
-    </tr>
 
-    <tr>
-      <td>
-        <div class="row">
-           <div class="col">
-              <img src="images/Service_History/calendar.png"><span class="date"><strong>31/03/2018</strong></span>
-            </div>
-        </div>
-          <div class="row">
-            <div class="col"><span class="time">12:00 - 18:00</span>
-            </div>
-          </div>
-      </td>
 
-      <td>
-        <div class="row">
-           <div class="col-auto avatar">
-              <img src="images/Service_History/cap.png">
-            </div>
-            <div class="col">Lyum Weston<br>
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star2.png">
-              <span>4</span>
-            </div>
-        </div>
-      </td>
-      <td class="text-style-1"><span style="font-size:20px;">€</span>63</td>
-      <td><span class="badge_complete">Completed</span></td>
-      <td><span class=" badge_rate1"data-toggle="modal" data-target="#myModal">Rate SP</span></td>
-    </tr>
-
-    <tr>
-      <td>
-        <div class="row">
-           <div class="col">
-              <img src="images/Service_History/calendar.png"><span class="date"><strong>31/03/2018</strong></span>
-            </div>
-        </div>
-          <div class="row">
-            <div class="col"><span class="time">12:00 - 18:00</span>
-            </div>
-          </div>
-      </td>
-
-      <td>
-        <div class="row">
-           <div class="col-auto avatar">
-              <img src="images/Service_History/cap.png">
-            </div>
-            <div class="col">Lyum Weston<br>
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star2.png">
-              <span>4</span>
-            </div>
-        </div>
-      </td>
-      <td class="text-style-1"><span style="font-size:20px;">€</span>63</td>
-      <td><span class="badge_cancel">Cancelled</span></td>
-      <td><span class=" badge_rate2 disabled"data-toggle="modal" data-target="#myModal">Rate SP</span></td>
-    </tr>
-
-    <tr>
-      <td>
-        <div class="row">
-           <div class="col">
-              <img src="images/Service_History/calendar.png"><span class="date"><strong>31/03/2018</strong></span>
-            </div>
-        </div>
-          <div class="row">
-            <div class="col"><span class="time">12:00 - 18:00</span>
-            </div>
-          </div>
-      </td>
-
-      <td>
-        <div class="row">
-           <div class="col-auto avatar">
-              <img src="images/Service_History/cap.png">
-            </div>
-            <div class="col">Lyum Weston<br>
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star2.png">
-              <span>4</span>
-            </div>
-        </div>
-      </td>
-      <td class="text-style-1"><span style="font-size:20px;">€</span>63</td>
-      <td><span class="badge_complete">Completed</span></td>
-      <td><span class=" badge_rate1"data-toggle="modal" data-target="#myModal">Rate SP</span></td>
-    </tr>
-
-    <tr>
-      <td>
-        <div class="row">
-           <div class="col">
-              <img src="images/Service_History/calendar.png"><span class="date"><strong>31/03/2018</strong></span>
-            </div>
-        </div>
-          <div class="row">
-            <div class="col"><span class="time">12:00 - 18:00</span>
-            </div>
-          </div>
-      </td>
-
-      <td>
-        <div class="row">
-           <div class="col-auto avatar">
-              <img src="images/Service_History/cap.png">
-            </div>
-            <div class="col">Lyum Weston<br>
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star2.png">
-              <span>4</span>
-            </div>
-        </div>
-      </td>
-      <td class="text-style-1"><span style="font-size:20px;">€</span>63</td>
-      <td><span class="badge_cancel">Cancelled</span></td>
-      <td><span class=" badge_rate2 disabled"data-toggle="modal" data-target="#myModal">Rate SP</span></td>
-    </tr>
-
-    <tr>
-      <td>
-        <div class="row">
-           <div class="col">
-              <img src="images/Service_History/calendar.png"><span class="date"><strong>31/03/2018</strong></span>
-            </div>
-        </div>
-          <div class="row">
-            <div class="col"><span class="time">12:00 - 18:00</span>
-            </div>
-          </div>
-      </td>
-
-      <td>
-        <div class="row">
-           <div class="col-auto avatar">
-              <img src="images/Service_History/cap.png">
-            </div>
-            <div class="col">Lyum Weston<br>
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star2.png">
-              <span>4</span>
-            </div>
-        </div>
-      </td>
-      <td class="text-style-1"><span style="font-size:20px;">€</span>63</td>
-      <td><span class="badge_complete">Completed</span></td>
-      <td><span class=" badge_rate1"data-toggle="modal" data-target="#myModal">Rate SP</span></td>
-    </tr>
-
-    <tr>
-      <td>
-        <div class="row">
-           <div class="col">
-              <img src="images/Service_History/calendar.png"><span class="date"><strong>31/03/2018</strong></span>
-            </div>
-        </div>
-          <div class="row">
-            <div class="col"><span class="time">12:00 - 18:00</span>
-            </div>
-          </div>
-      </td>
-
-      <td>
-        <div class="row">
-           <div class="col-auto avatar">
-              <img src="images/Service_History/cap.png">
-            </div>
-            <div class="col">Lyum Weston<br>
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star2.png">
-              <span>4</span>
-            </div>
-        </div>
-      </td>
-      <td class="text-style-1"><span style="font-size:20px;">€</span>63</td>
-      <td><span class="badge_cancel">Cancelled</span></td>
-      <td><span class=" badge_rate2 disabled"data-toggle="modal" data-target="#myModal">Rate SP</span></td>
-    </tr>
-
-    <tr>
-      <td>
-        <div class="row">
-           <div class="col">
-              <img src="images/Service_History/calendar.png"><span class="date"><strong>31/03/2018</strong></span>
-            </div>
-        </div>
-          <div class="row">
-            <div class="col"><span class="time">12:00 - 18:00</span>
-            </div>
-          </div>
-      </td>
-
-      <td>
-        <div class="row">
-           <div class="col-auto avatar">
-              <img src="images/Service_History/cap.png">
-            </div>
-            <div class="col">Lyum Weston<br>
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star2.png">
-              <span>4</span>
-            </div>
-        </div>
-      </td>
-      <td class="text-style-1"><span style="font-size:20px;">€</span>63</td>
-      <td><span class="badge_complete">Completed</span></td>
-      <td><span class=" badge_rate1"data-toggle="modal" data-target="#myModal">Rate SP</span></td>
-    </tr>
-
-    <tr>
-      <td>
-        <div class="row">
-           <div class="col">
-              <img src="images/Service_History/calendar.png"><span class="date"><strong>31/03/2018</strong></span>
-            </div>
-        </div>
-          <div class="row">
-            <div class="col"><span class="time">12:00 - 18:00</span>
-            </div>
-          </div>
-      </td>
-
-      <td>
-        <div class="row">
-           <div class="col-auto avatar">
-              <img src="images/Service_History/cap.png">
-            </div>
-            <div class="col">Lyum Weston<br>
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star1.png">
-              <img src="images/Service_History/star2.png">
-              <span>4</span>
-            </div>
-        </div>
-      </td>
-      <td class="text-style-1"><span style="font-size:20px;">€</span>63</td>
-      <td><span class="badge_cancel">Cancelled</span></td>
-      <td><span class=" badge_rate2 disabled"data-toggle="modal" data-target="#myModal">Rate SP</span></td>
-    </tr>
+    
 
   </tbody>
 
@@ -569,11 +231,19 @@
   
   <!-- MAIN CONTENT END -->
   <!-- FOOTER START -->
- <?php include_once 'footer.php'; ?>
+ <?php include_once 'customer_script_service_history.php'; 
+      include_once 'footer.php';
 
+         ?>
+ 
 
 <!-- COOKIE END -->
-<?php include_once 'jsLinks.php'; ?>
+
+      <script src="JavaScripts/export_data.js"></script>
+<?php include_once 'jsLinks.php';
+      include_once 'export_data.php';
+      include_once 'ratemodal.php'
+       ?>
 
 
 </body>
