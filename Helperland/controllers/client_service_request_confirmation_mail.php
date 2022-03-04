@@ -7,7 +7,7 @@ require_once '../PHPMailer/src/PHPMailer.php';
 require_once '../PHPMailer/src/Exception.php';
 require_once '../PHPMailer/src/SMTP.php';
 
-class Clientmail{
+class client_service_request_confirmation_mail{
     
     // private $userModel;
     private $mail;
@@ -29,7 +29,7 @@ class Clientmail{
     public function sendEmail(){
         //Sanitize POST data
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        $Email = $_SESSION['Email'];
+        $Email = $_SESSION['email'];
 
         //Can Send Email Now
         $subject = "Your request  is submitted";
@@ -51,7 +51,7 @@ class Clientmail{
     
 }
 
-$init = new Clientmail;
+$init = new client_service_request_confirmation_mail;
 $init->sendEmail();
 
 
