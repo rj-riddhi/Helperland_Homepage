@@ -1,4 +1,4 @@
-
+// Datepicker
 // Cookie
 
 (function () {
@@ -10,9 +10,8 @@
     if (!cookieAlert) {
        return;
     }
-
     cookieAlert.offsetHeight;
-    if (!getCookie("acceptCookies")) {
+    if (getCookie("acceptCookies")) {
         cookieAlert.classList.add("show");
     }
 
