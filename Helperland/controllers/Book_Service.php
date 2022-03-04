@@ -2,7 +2,7 @@
 require_once '../models/Database.php';
 require_once '../models/ResetPassword.php';
 require_once '../helpers/msgs.php';
-class Users{
+class Book_Service{
 	private $usermodel;
 	
 	public function __construct(){
@@ -24,6 +24,69 @@ else{
 	echo json_encode(array('insert' => 'failed'));
 }
 }
+
+public function book_service_schedule_plan(){
+	$input = file_get_contents('php://input');
+	$decode = json_decode($input,true);
+	$bath = $decode['bath'];
+	$bed = $decode['bed'];
+	$date = $decode['date'];
+	$hrs = $decode['hrs'];
+	$time = $decode['time'];
+	$comment = $decode['comment'];
+	$pets = $decode['pets'];
+
+		if(empty($bath || $bed || $date || $hrs || $time))
+		{
+			flash("book_service","Please fill all details");
+			
+		}
+		if($bath<1){
+			flash('error',"Min 1 bath should select");
+			// redirect("../views/book_service.php");
+		}
+		if($bed < 1){
+			flash('error','Min 1 bed should select');
+			// redirect("../views/book_service.php");
+		}
+			 $_SESSION['bed'] = $bed;
+			 $_SESSION['bath'] = $bath;
+			 $_SESSION['comment'] = $comment;
+		
+		if($date < date('m/d/Y'))
+		{
+			flash("book_service","Please enter valid date");
+			// redirect("../views/book_service.php");
+		}
+		$_SESSION['date'] = date("Y/m/d", strtotime($date));
+		if(empty($time))
+		{
+			flash("book_service","Please enter time");
+			// redirect("../views/book_service.php");
+		}
+		$_SESSION['time'] = $time;
+		if($hrs<3 || empty($hrs)){
+			flash("book_service","Minimum selected hours are 3");
+			// redirect("../views/book_service.php");
+		}
+		$_SESSION['hrs'] = $hrs;
+		
+		
+		if(isset($pets))
+		{
+			$_SESSION['pets']=1;
+			$pets = "Yes";
+		}
+		else
+		{
+			$pets="No";
+		}
+		echo json_encode(array('insert' => 'success'));
+
+
+
+	}
+
 public function City()
     {		
             $pincode = $_SESSION['postalcode'];
@@ -60,8 +123,7 @@ public function saveaddress(){
     $email = $_SESSION['email'];   
 	$id = $this->usermodel->getuserid($email);	
 	$userid = $id['UserId'];
-	
-	$_SESSION['userid'] = $userid;	
+		
 		
 		$service_data=[
 			'street' =>$street,
@@ -98,18 +160,17 @@ public function getAddresses($result){
 		$add = $address[1];
 		$count = $address[0];
 		if($count){
-		while($count > 0)
-		{
-			$addressline1 = $add['AddressLine1'];
-			$addressline2 = $add['AddressLine2'];
-			$phone = $add['Mobile'];
-			$city = $add['City'];
+		foreach ($add as $row){
+			$addressline1 = $row['AddressLine1'];
+			$addressline2 = $row['AddressLine2'];
+			$phone = $row['Mobile'];
+			$city = $row['City'];
 			// $state = $add['State'];
-			$email = $add['Email'];
-			$addid = $add['AddressId'];
-			$isdefault = $add['IsDefault'];
-			$isdeleted = $add['IsDeleted'];
-			$postalcode = $add['PostalCode'];
+			$email = $row['Email'];
+			$addid = $row['AddressId'];
+			$isdefault = $row['IsDefault'];
+			$isdeleted = $row['IsDeleted'];
+			$postalcode = $row['PostalCode'];
 			 if ($isdefault == 1) {
                         $isdefault =  'checked';
                     } else {
@@ -117,26 +178,25 @@ public function getAddresses($result){
                     }
             if($isdeleted == 0){
 			
-			$list = '<div class="row form-row" style="border:1px solid #ccc;margin-top:1.5rem;">
+			$list = '<div class="row form-row " style="border:1px solid #ccc;margin-top:1.5rem;">
                           <div class="col-auto  m-2 p-3">
                             <input type="radio" id="'.$addid.'" value="'.$addid.'" name="add" '.$isdefault.' >
                           </div>
                           <div class="col-auto m-2 ">
                             <label for="'.$addid.'" class="row" style="font-weight: normal;font-size:14px">
-                              Address : '.$addressline1.' , '.$addressline2.' '.$postalcode.'<br> Phone number : '.$phone.'
+                              Address : <span id="'.$addid.' street">'.$addressline1.'</span><span id="'.$addid.' housenumber"> '.$addressline2.'</span> '.$postalcode.'<br> Phone number : '.$phone.'
                             </label>
                           </div>
                         </div>';
-                        $count -= $count;
              
-			echo $list;exit;
+			echo $list;
 		}
-			
-		}
+		
 	}
+}
 	else
 	{
-		echo "Not received all adresses";
+		echo 0;
 	}
 	}
 public function favourite_sp(){
@@ -147,10 +207,11 @@ public function favourite_sp(){
 		$arr = $result[1];
 		$count = $result[0];
 		if ($count) {
-			while($count > 0){
-				   	$targetuserid = $arr['TargetUserId'];
-                    $favourite = $arr['IsFavorite'];
-                    $blocked = $arr['IsBlocked'];
+		foreach ($arr as $row){
+		
+		$targetuserid = $row['TargetUserId'];
+                    $favourite = $row['IsFavorite'];
+                    $blocked = $row['IsBlocked'];
         			$targetresult = $this->usermodel->GetUser($targetuserid);
                     $serviceproviderid = $targetresult['UserId'];
                     $firstname = $targetresult['FirstName'];
@@ -158,32 +219,46 @@ public function favourite_sp(){
 
                     if ($favourite == 1) {
                 
-                    	$favourite = '<div class="row w-25">
-                         				<div class="col favourite_sp text-center">
+                    	$favourite = '<div class="col mt-2 favourite_sp text-center">
                          					<img id="'.$firstname.'" src="images/Book_Service/avatar-hat.png">
-                         					<p><strong>'.$firstname.' '.$lastname.'</p></strong> </p>
-                         					<button class="btn btn3" id="'.$targetuserid.'" onclick="spselected('.$targetuserid.','.$firstname.')" value="'.$targetuserid.'">Select</button>
-                         				</<div>
-                         			  </div>';
+                         					<p><strong id="'.$lastname.'">'.$firstname.' '.$lastname.'</p></strong> </p>
+                         					<button class="btn btn3 favsp" id="'.$targetuserid.'" onclick="spselected('.$targetuserid.','.$firstname.','.$lastname.')" value="'.$targetuserid.'">Select</button>
+                         				</<div>';
                     	
                         echo $favourite;
                     }
-
-				$count -= $count;
-			}
-                
-                
+                    	}
+				   	
+ 
             }
             else
-            	echo "You have no any favourite sp";
+            	echo "<h4 class='alert alert-secondary'>You have no any favourite sp<h4>";
 	}
+public function service_address(){
+	$input = file_get_contents('php://input');
+	$decode = json_decode($input,true);
+	$addid = $decode['addid'];
+	$address = $this->usermodel->Service_address($addid);
+							if($address){
+								$_SESSION['addid'] = $addid;
+								echo 1;
+							}
+							else
+								echo 0;
+}
 public function addrequest(){
     $input = file_get_contents('php://input');
 	$decode = json_decode($input,true);
 	$username = $decode['username'];
+	$userid1 = $this->usermodel->getuserid($_SESSION['email']);
+	$userid = $userid1['UserId'];
+	$Serviceid = $decode['Serviceid'];
+	// echo $userid;exit;
+	$email = $_SESSION['email'];
 	$postalcode = $decode['postalcode'];
     $bed = $decode['bed'];
     $bath = $decode['bath'];
+    $date = $decode['date'];
     $time = $decode['time'];
     $hrs = $decode['hrs']; 
     $extrahour = $decode['extrahour']; 
@@ -195,23 +270,35 @@ public function addrequest(){
     $paymentrefno = $decode['paymentrefno']; 
     $paymentdue = $decode['paymentdue'];     
     $comments = $decode['comments'];     
-    $street = $decode['street'];     
+    $street = $decode['street']; 
     $housenumber = $decode['housenumber'];     
     $phone = $decode['phone'];         
     $city = $decode['city'];         
     $addid = $decode['addid'];         
     $pets = $decode['pets'];         
-    $selectedsp = $decode['selectedsp'];         
+    $selectedsp = $decode['selectedsp'];
+    // echo $selctedsp;exit;
+    $spid1 = $this->usermodel->GetServiceProvider($selectedsp);
+    if($spid1){
+    $spid = $spid1['UserId'];
+	}
+	else
+	{
+		$spid = "";
+	}
+    // echo "<h1>". $spid."</h1>";exit;        
     $cardnumber = $decode['cardnumber'];         
-    $expdate = $decode['expdate'];    
+    $expdate = $decode['expdate'];  
     
 	$service_data=[
 			'username' => $username,
-			'userid' =>$_SESSION['userid'],
-			'email' =>$_SESSION['email'],
+			'userid' =>  $userid,
+			'Serviceid'=>$Serviceid,
+			'email' =>   $email,
 			'postalcode' =>  $postalcode,
 		    'bed' =>  $bed,
 		    'bath' =>  $bath,
+		    'date' => $date,
 		    'time' =>  $time,
 		    'hrs' =>  $hrs, 
 		    'extrahour' =>  $extrahour, 
@@ -229,43 +316,82 @@ public function addrequest(){
 		    'city' =>  $city,         
 		    'addid' =>  $addid,         
 		    'pets' =>  $pets,         
-		    'selectedsp' =>  $selectedsp,         
+		    'selectedsp' =>  $selectedsp,
+		    'spid' =>$spid,         
 		    'cardnumber' =>  $cardnumber,         
 		    'expdate' =>  $expdate,
 		    'paymentdone' => 1,
             'recordversion' => 1,
-            'status' =>'pending'
+            'status' =>"pending"
 			
 		];
 		
 
 		$result = $this->usermodel->Serviceadd($service_data);
-		$serviceprovider = $this->model->GetActiveServiceProvider();
+		$serviceprovider = $this->usermodel->GetActiveServiceProvider();
+		$serviceid =  $result['ServiceId'];
 		if($result)
 		{
-			include('client_service_request_confirmation_mail.php');
+			
 			if (!empty($selectedsp)) {
-                    $sp = $this->usermodel->GetUsers($selectedsp);
-                    $addressid = $result;
-                    $email = $sp['Email'];
-                    $_SESSION['spemail'] = $email;
-                    include('Mail_for_serviceproviders.php');
-                    echo json_encode(array('insert'=>'success','addressid'=>$addressid));
+                    $sp = $this->usermodel->GetUser($spid);
+                    if($sp['IsActive'] == 1)
+                    {
+                    	if($sp['WorksWithPets'] == 1){
+		                    // $addressid = $result['ServiceId'];
+		                    // echo $addressid;exit;
+		                    $email = $sp['Email'];
+		                    $_SESSION['spemail'] = array();
+		                    array_push($_SESSION['spemail'],$email);
+		                    $serviceidadd = $this->usermodel->addserviceid($service_data['street'],$serviceid);
+							
+		                    include('client_service_request_confirmation_mail.php');
+		                    include('Mail_for_serviceproviders.php');
+		                    echo json_encode(array('insert'=>'success','serviceid'=>$result['ServiceId']));
+		                }
+		                else
+		                {
+		                	$deleteadd = $this->usermodel->delteserviceadd($result['Email']);
+		                	$result1 = $this->usermodel->deleteservice($result['ServiceId']);
+                    	if($result1){
+                    	echo json_encode(array('insert'=>'failed','msg'=>'Your favourite Service Provider is not working with pets'));
+                    	}
+		                }
+                    }
+                    else{
+		                $deleteadd = $this->usermodel->delteserviceadd($result['Email']);
+                    	$result1 = $this->usermodel->deleteservice($result['ServiceId']);
+                    	if($result1){
+                    	echo json_encode(array('insert'=>'failed','msg'=>'Your favourite Service Provider is not avilable in your area'));
+                    	}
+                    	else
+                    	{
+                    		echo json_encode(array('insert'=>'failed','msg'=>'Your request is not submitted'));
+                    	}
+                    }
                 } else {
                     if (count($serviceprovider)) {
-                        foreach ($serviceprovider as $row) {
-                            $addressid = $result;
-                            $email = $row['Email'];
-                            include('BookingMail.php');
-                        }
+
+                            include('client_service_request_confirmation_mail.php');
+                            // $email = array();
+                            $_SESSION['spemail'] = array();
+                    		foreach ($serviceprovider as $row) {
+                    	
+                            $serviceid = $result['ServiceId'];
+                            $spemail = $row;
+                            array_push($_SESSION['spemail'],$spemail);
+                        } 
+                         $serviceidadd = $this->usermodel->addserviceid($service_data['street'],$serviceid);
+                        include('Mail_for_serviceproviders.php'); 
+
                     }
-                    $addressid = $result;
-                    echo json_encode(array('insert'=>'success','addressid'=>$addressid));
+                    $serviceid = $result['ServiceId'];
+                    echo json_encode(array('insert'=>'success','serviceid'=>$result['ServiceId']));
                 }
             }
             else
 		{
-			echo json_encode(array('insert' => 'failed'));
+			echo json_encode(array('insert' => 'failed','msg'=>"Sorry your booking is not submitted"));
 		}
 			
 		}
@@ -273,7 +399,7 @@ public function addrequest(){
 
 }
 
-$init = new Users;
+$init = new Book_Service;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
@@ -284,8 +410,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 		case 'validpostal':
 			$init->validpostal();
 			break;
+		case 'book_service_schedule_plan':
+		 $init->book_service_schedule_plan();
+		 break;
 		case 'saveaddress':
 			$init->saveaddress();
+			break;
+		case 'service_address':
+			$init->service_address();
 			break;
 		case 'addrequest':
 			$init->addrequest();
@@ -301,7 +433,8 @@ else{
 		break;
 
 		case 'getAddresses':
-			$init->getAddresses($_SESSION['postalcode']);
+			$init->getAddresses($_SESSION['email']);
+			// $init->getAddresses($_SESSION['userid']);
 			break;
 
 		case 'getFavouritesp':
