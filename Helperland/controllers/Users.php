@@ -51,11 +51,8 @@ class Users{
 			'creationDate'=>date('Y-m-d H:i:s'),
 			'currentTime'=>time(),
 			'status' => 'New', 
-			'isregistered' => 'YES',
-			'isactive' => 'No'
-			//date('Y-m-d H:i:s'),
-            //'resetkey' => $resetkey,
-			//'roleid' => 'Customer',
+			'isregistered' => '1',
+			'isactive' => '1'
 		
             
 
@@ -207,94 +204,58 @@ class Users{
             if($loggedInUser){
                 //Create session
 				$_SESSION['email'] = $data['Email'];
+				$_SESSION['userid'] = $data['UserId'];
                 $this->createUserSession($loggedInUser);
             }else{
+            	$_SESSION['email'] = $data['Email'];
                 flash("login", "Password Incorrect");
-                redirect("../views/Homepage.php");
+                // redirect("../views/Homepage.php");
+                redirect("../controllers/Users.php?q=login");
             }
         }else{
-            flash("login", "No user found");
-            redirect("../views/Homepage.php");
+            flash("login", "No user found please register first");
+            // redirect("../views/Homepage.php");
+            redirect("../controllers/Users.php?q=login");
         }
     }
-    public function City()
-    {		echo "<script>alert('called')</script>";exit;
-            // $pincode = $_SESSION['postalcode'];
-            // $result = $this->usermodel->City($pincode);
-           	// $city = $result[0];
-            // $state = $result[1];
-            // $return = [$city, $state];
-            // echo json_encode($return);exit;
+	
+	
+	
+     
+    
+    public function createUserSession($user){
         
+        $_SESSION['FirstName'] = $user;
+        redirect("../views/customer_service_history.php");
+    }
+
+    public function logout(){
+    	$email = $_SESSION['email'];
+    	$result = $this->usermodel->changeactivestatus($email);
+    	if($result){
+    	unset($_SESSION['FirstName']);
+    	session_unset();
+    	session_destroy();
+    	redirect("../views/Homepage.php");
+    }
+    else{
+    	redirect("../views/Homepage.php?q=logout");
+    }
+
+    	
+
+
+
+    }
+    public function logout_login(){
+    	unset($_SESSION['FirstName']);
+    	session_unset();
+    	session_destroy();
+
+    	redirect("../views/Homepage.php?login=true");
     }
 
     
-	public function book_service_schedule_plan(){
-		
-		$service_data=[
-			'bath' =>trim($_POST['bath']),
-			'bed' =>trim($_POST['bed']),
-			'date' =>trim($_POST['date']),
-			'time' =>trim($_POST['time']),
-			'hrs' =>trim($_POST['hrs']),
-			'comment'=>trim($_POST['comment']),
-			'pets' =>$_POST['pets']
-
-		];
-		if(empty($service_data['bath'] || $service_data['bed'] || $service_data['date'] || $service_data['hrs'] || $service_data['time']))
-		{
-			flash("book_service","Please fill all details");
-			redirect("../views/book_service.php");
-		}
-		if($service_data['bath']<1){
-			flash('error',"Min 1 bath should select");
-			redirect("../views/book_service.php");
-		}
-		if($service_data['bed'] < 1){
-			flash('error','Min 1 bed should select');
-			redirect("../views/book_service.php");
-		}
-			 $_SESSION['bed'] = $service_data['bed'];
-			 $_SESSION['bath'] = $service_data['bath'];
-			 $_SESSION['date'] = $service_data['date'];
-			 $_SESSION['comment'] = $service_data['comment'];
-		if($service_data['date'] < date('m/d/Y'))
-		{
-			flash("book_service","Please enter valid date");
-			redirect("../views/book_service.php");
-		}
-		$_SESSION['date'] = $service_data['date'];
-		if(empty($service_data['time']))
-		{
-			flash("book_service","Please enter time");
-			redirect("../views/book_service.php");
-		}
-		$_SESSION['time'] = $service_data['time'];
-		if($service_data['hrs']<3 || empty($service_data['hrs'])){
-			flash("book_service","Minimum selected hours are 3");
-			redirect("../views/book_service.php");
-		}
-		$_SESSION['hrs'] = $service_data['hrs'];
-		
-		
-		if(isset($service_data['pets']))
-		{
-			$_SESSION['pets']="Yes";
-			$service_data['pets'] = "Yes";
-		}
-		else
-		{
-			$service_data['pets']="No";
-		}
-		// $this->favourite_sp();
-		echo json_encode($service_data);
-
-		flash("book_service","If you want extra services then please select other wise press next","alert alert-success");
-		redirect("../views/book_service.php");
-
-
-	}
-	
 
 	public function saveaddress(){
 		$pincode = $_SESSION['postalcode'];
@@ -330,27 +291,6 @@ class Users{
 			flash("saveaddress","Adress is not saved try again");
 		}
 	}
-	
-	
-     
-    
-    public function createUserSession($user){
-        
-        $_SESSION['FirstName'] = $user;
-        redirect("../views/customer_service_history.php");
-    }
-
-    public function logout(){
-
-    	unset($_SESSION['FirstName']);
-    	session_unset();
-    	session_destroy();
-
-    	redirect("../views/Homepage.php");
-
-
-
-    }
 
 }
 $init = new Users;
@@ -372,9 +312,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		 $init->login();
 		 break;
 
-		 case 'book_service_schedule_plan':
-		 $init->book_service_schedule_plan();
-		 break;
+		 // case 'book_service_schedule_plan':
+		 // $init->book_service_schedule_plan();
+		 // break;
 
 		 default:
 		 redirect("../views/Homepage.php");
@@ -404,8 +344,20 @@ else
 		case 'serviceprovider' :
 			redirect("../views/Become_a_Pro.php");
 			break;
+		case 'cust_dashboard':
+			redirect("../views/customer_dashboard.php");
+			break;
+		case 'cust_servicehistory':
+			redirect("../views/customer_service_history.php");
+			break;
 		case 'logout' :
 			$init->logout();
+			break;
+		case 'logout_login' :
+			$init->logout_login();
+			break;
+		case 'mysettings' :
+			redirect("../views/customer_mysettings.php");
 			break;
 		case 'book_now':
 			redirect("../views/book_service.php");
@@ -413,6 +365,10 @@ else
 		case 'validpostal':
 			$init->validpostal();
 			break;
+
+		// case 'book_service_schedule_plan':
+		//  $init->book_service_schedule_plan();
+		//  break;
 		
 		default:
 			redirect("../views/Homepage.php");
