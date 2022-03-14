@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*{
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+.main_container{
+	max-width :  1560px;
+}
+
+
+
+.banner{
+	height: 100%;
+	width: 100%;
+}
+
+.prices{
+	color :#4F4F4F;
+	font-size: 35.95px;
+	font-weight: bold;
+	margin-bottom: 9px;
+	margin-top: 32px;
+}
+.main_container{
+	overflow-x: hidden;
+}
+
+.container2{
+	margin-top: 1.94rem;
+	max-width: 553px
+}
+
+.container3{
+	margin-top: 3.18rem;
+	max-width: 71.25rem;
+	border-top: 1px solid #CCCCCC
+}
+
+.container4{
+	background-color: #F6F6F6;
+	margin-top: 8.07rem;
+	margin-bottom: 4.44rem;
+
+}
+
+.container5{
+	max-width: 65.31rem;
+}
+
+.newsletter_head{
+	font-size: 17.99px;
+	color: #353548;
+}
+
+
+/* style="padding-left:115px ; padding-right: 115px;" */

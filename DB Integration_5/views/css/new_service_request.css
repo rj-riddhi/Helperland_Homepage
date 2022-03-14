@@ -1,0 +1,379 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+*{
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+
+}
+
+h1{
+
+	text-align: center;
+	color :#4F4F4F;
+	font-size: 2.25rem;
+	font-weight: bold;
+	margin-bottom: 0.56rem;
+	margin-top: 2rem;
+	font-family: 'Roboto', sans-serif;
+}
+.p_welcome{
+	font-size: 1.88rem;
+	color:#4F4F4F;
+	text-align: center;
+	margin-top: 38.42px;
+	margin-bottom: 43.50px;
+}
+.row_welcome{
+	background-color: #F9F9F9;
+}
+h2{
+	text-align: center;
+	color :#4F4F4F;
+	font-size: 1.75rem;
+	font-weight: bold;
+	line-height: 1.5;
+	margin-bottom: 1.44rem;
+	margin-top: 6.04rem;
+	font-family: 'Roboto', sans-serif;
+}
+.register{
+	width: 16.87rem;
+	height: 16.87rem;
+	border-radius: 50%;
+}
+.right-bg{
+	padding: 2.5rem;
+}
+
+.main_container{
+	max-width: 97.5rem;
+}
+
+.banner{
+	   width: 100%;
+	   height: 58.120rem;
+	   background-size:cover ;
+	   background: url('../images/Become_a_Pro/become-a-pro-banner.png');
+}
+.nav_row{
+	background-color: #525252;
+	opacity: 0.7;
+	max-width: 97.5rem;
+
+}
+ul{
+	margin: 0px;
+}
+ul li{
+	list-style: none;
+	display: inline-block;
+
+
+}
+ul li a {
+color :  #fff;
+padding :  15px 17px;
+font-size: 17px;
+font-weight: normal;
+text-decoration: none;
+
+}
+hr{
+	 border:1px solid grey;
+	 width:50%
+}
+.badge_accept{
+	background-color: #1D7A8C;
+  color: white;
+  border-radius: 17px;
+  padding: 7px 15px 8px 16px;
+} 
+/* .not-allowed {
+     pointer-events: auto! important;
+     cursor: not-allowed! important;
+} */
+.badge_accept:hover{
+	cursor:pointer;
+}  
+.badge_complete{
+	background-color: #67B644;
+  padding: 7px 15px 8px 16px;
+  border-radius: 17px;
+  color: white;
+}
+.badge_complete:hover{
+	cursor:pointer;
+}
+.badge_cancel{
+	background-color: #FF6B6B;
+	padding: 7px 15px 8px 16px;
+	border-radius: 17px;
+	color: white;
+} 
+.badge_cancel:hover{
+	cursor:pointer;
+}
+.service_history{
+  font-weight: bold;
+  font-size: 22px;
+  color: #646464;
+}
+.icon-background {
+    background-color: #ce2029;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    padding: 0.2rem;
+}
+.avatar_name2{
+  color: #646464;
+}
+.summary_row{
+  border-bottom: 1px solid #e9ecef;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    padding-bottom:  16px;
+}
+.payment_fonts{
+   color:#146371;
+   font-weight: bolder;
+   font-size: 2rem;
+}
+.logo{
+	width: 76px;
+	height: 54px;
+}
+
+
+.container2{
+	margin-top: 1.94rem;
+
+}
+.sidebar_col{
+	max-width: 16.37rem;
+}
+.sidebar {
+	min-height: 100%;
+    position: absolute !important;
+    background-color: #1D7A8C;
+    color: #fff;
+    overflow-y: auto;
+   width: 15.98rem;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  border-bottom: 0.01px solid grey;
+}
+ 
+.sidebar a.active {
+  background-color:#146371;
+  
+}
+
+.sidebar a:hover:not(.active) {
+  background-color:#146371 ;
+  
+}
+.navbar ul li a{
+	text-decoration: none;
+}
+.navbar ul li a:hover{
+	border-bottom: 1px solid grey;
+	transition:all 0.5s;
+	color: #fff;
+}
+
+
+table thead{
+	background-color: #F9F9F9;
+}
+.header {
+            position: sticky;
+            top:0;
+        }
+table {
+	color: #646464;
+}
+table th,td{
+	border: 0px !important;
+}
+
+.date{
+	padding: 7px 4px;
+}
+.time{
+	padding: 7px 4px;
+}
+#rowdivider{
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  width:100%;
+  padding-top: 0;
+}
+
+
+
+h3{
+	font-size: 17.99px;
+	color: #353548;
+	font-weight: bold;
+	margin-top: 4rem;
+}
+.newsletter input{
+max-width: 14.6em;
+height: 40px;
+background: #F4F5F8 0% 0% no-repeat padding-box;
+border: 1px solid #565656;
+border-radius: 20px;
+opacity: 1;
+padding-left: 22px;
+padding-top: 7px;
+padding-bottom :  13px;
+}
+.newsletter button{
+width: 88px;
+height: 40px;
+background: #FF7B6D 0% 0% no-repeat padding-box;
+border-radius: 20px;
+opacity: 1;
+margin-left: 11px;
+}
+
+.footer{
+	background-color: #111111;
+	padding-top: 5px;
+
+}
+.footer ul{
+	margin-top: 1rem;
+}
+.footer ul li a{
+	font-size: 14px;
+}
+
+.social-media{
+	text-align: center;
+	display: flex;
+	margin: auto;
+}
+  
+
+
+
+/* cookie */
+
+.cookiealert {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0 !important;
+    z-index: 999;
+    visibility: hidden;
+    border-radius: 0;
+    transform: translateY(100%);
+    transition: all 500ms ease-out;
+    color: #ecf0f1;
+    background-color: #525252;
+	opacity: 0.9;
+    font-size: 14px;
+}
+
+.cookiealert.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0%);
+    transition-delay: 1000ms;
+}
+
+.cookiealert a {
+    text-decoration: none;
+}
+
+.cookiealert .acceptcookies {
+
+    background: #EED507 0% 0% no-repeat padding-box;
+    width: 99px;
+    height: 40px;
+    border-radius: 20px;
+    vertical-align: baseline;
+}
+
+@media 
+only screen and (max-width: 760px) ,
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	table { 
+	  	width: 100%; 
+	  	padding-right: 10px;
+	}
+ 
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+
+	td::before { 
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+		content: attr(data-column);
+
+		color: #000;
+		font-weight: bold;
+	}
+
+}
+
+/* Rating css */
+.stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars-outer::before {
+  content: "\f006  \f006  \f006  \f006  \f006";
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars-inner::before {
+  content: "\f005  \f005  \f005  \f005  \f005";
+  color: #f8ce0b;
+}
